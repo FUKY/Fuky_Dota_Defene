@@ -39,11 +39,35 @@ public class TowerController : BaseController {
     {
         //spawn solider thu nhat tu list Tower
         //GameObject solider;
+        AntController antControl = listSolider[0].GetComponent<AntController>();
+        if (antControl != null)
+        {
+            antControl.ActiveAnt();
+            
+        }
         //solider.GetComponent<AntController>().SetTargetTower(targetTower);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         //add list Tower
+        if (other.gameObject.tag == "solider")
+        {
+            
+            AntController antControl = other.gameObject.GetComponent<AntController>();
+            if (antControl != null)// && antControl.isMine
+            {
+                Debug.Log("Collider with tower");
+                if (antControl.GetActiveAnt())
+                {
+                    //listSolider.Add((GameObject)other.gameObject);
+                    antControl.DeActiveAnt();
+                }
+
+            }else
+            {
+                this.AddEnemyInRange(other.gameObject);
+            }
+        }
     }
 }

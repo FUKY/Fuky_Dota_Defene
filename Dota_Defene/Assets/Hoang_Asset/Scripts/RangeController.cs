@@ -8,18 +8,25 @@ public class RangeController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameObject parent = transform.parent.gameObject;
+        
         if (parent != null)
         {
-            if (gameObject.tag == "solider")
+            if (parent.tag == "solider")
             {
-                parentController = parent.GetComponent<AntController>();
+                parentController = (BaseController)parent.GetComponent<AntController>();
+                //
             }
             else 
             {
-                if (gameObject.tag == "tower")
+                if (parent.tag == "tower")
                 {
-                    parentController = parent.GetComponent<TowerController>();
+                    parentController = (BaseController)parent.GetComponent<TowerController>();
                 }
+            }
+
+            if (parentController != null)
+            {
+                Debug.Log("Get BaseController" + parentController.isMine);
             }
             
         }
@@ -35,6 +42,7 @@ public class RangeController : MonoBehaviour {
     {
         if (parentController != null)
         {
+            Debug.Log("Collider with range");
             parentController.AddEnemyInRange(other.gameObject);
         }
     }
