@@ -7,6 +7,8 @@ public class TowerController : BaseController {
     List<GameObject> listSolider;
     public bool outSolider;//Cho phép solider di ra
 
+    public RectTransform targetTower;
+
     public float countDownSpawnSolider;
     public float timeSpawnSoliderCur;
 
@@ -35,11 +37,11 @@ public class TowerController : BaseController {
 
     void SpawnSolider() 
     {
-        //spawn solider thu nhat
+        //spawn solider thu nhat tu list Tower
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
+        //add list Tower
     }
 }
