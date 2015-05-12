@@ -10,7 +10,18 @@ public class RangeController : MonoBehaviour {
         GameObject parent = transform.parent.gameObject;
         if (parent != null)
         {
-            parentController = parent.GetComponent<BaseController>();
+            if (gameObject.tag == "solider")
+            {
+                parentController = parent.GetComponent<AntController>();
+            }
+            else 
+            {
+                if (gameObject.tag == "tower")
+                {
+                    parentController = parent.GetComponent<TowerController>();
+                }
+            }
+            
         }
         
 	}

@@ -38,6 +38,8 @@ public class TowerController : BaseController {
     void SpawnSolider() 
     {
         //spawn solider thu nhat tu list Tower
+        //GameObject solider;
+        //solider.GetComponent<AntController>().SetTargetTower(targetTower);
     }
 
     void OnTriggerEnter2D(Collider2D other)

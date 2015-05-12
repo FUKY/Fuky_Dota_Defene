@@ -5,7 +5,7 @@ public class AntController : BaseController {
 
     public float speed = 1;
 
-    public RectTransform target;
+    public RectTransform targetTrans;
 
 
     public float angle;
@@ -16,13 +16,13 @@ public class AntController : BaseController {
 	
 	// Update is called once per frame
 	void Update () {
-        //angle = AngleRotation(transform, target);
-
         Move();
 	}
 
     void Move() 
     {
+        angle = AngleRotation(transform, targetTrans);
+
         float x = Mathf.Cos(Mathf.Deg2Rad * angle) * speed;
         float y = Mathf.Sin(Mathf.Deg2Rad * angle) * speed;
 
@@ -31,9 +31,14 @@ public class AntController : BaseController {
 
     float AngleRotation(Transform transfBegin, RectTransform transfEnd)
     {
-        Vector3 relative = transfBegin.localPosition - transfEnd.localPosition;//transfBegin.InverseTransformPoint(transfEnd.localPosition);
+        Vector3 relative = transfEnd.localPosition - transfBegin.localPosition;//transfBegin.InverseTransformPoint(transfEnd.localPosition);
         
         float angle1 = Mathf.Atan2(relative.y, relative.x) * Mathf.Rad2Deg;
         return angle1;
+    }
+
+    public void SetTargetTower(RectTransform targetTowerTrans)
+    {
+        targetTrans = targetTowerTrans;
     }
 }
