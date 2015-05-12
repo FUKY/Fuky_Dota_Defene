@@ -5,6 +5,14 @@ using System.Collections.Generic;
 public class TowerController : BaseController {
 
     List<GameObject> listSolider;
+    public bool outSolider;//Cho phép solider di ra
+
+    public float countDownSpawnSolider;
+    public float timeSpawnSoliderCur;
+
+    public bool isActive;//khi active thi co the tao ra gold
+    public float timeAddGold;
+    public float countDownAddGold;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,6 +20,26 @@ public class TowerController : BaseController {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        if (outSolider)
+        {
+            timeSpawnSoliderCur += Time.deltaTime;
+            if (listSolider.Count > 0)
+            {
+                timeSpawnSoliderCur = 0;
+                SpawnSolider();
+            }
+            
+        }
+        
 	}
+
+    void SpawnSolider() 
+    {
+        //spawn solider thu nhat
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
+    }
 }
