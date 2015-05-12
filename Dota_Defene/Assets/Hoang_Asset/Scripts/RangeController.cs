@@ -42,8 +42,8 @@ public class RangeController : MonoBehaviour {
     {
         if (parentController != null)
         {
-            Debug.Log("Collider with range");
-            parentController.AddEnemyInRange(other.gameObject);
+            //Debug.Log("Collider with range");
+            //parentController.AddEnemyInRange(other.gameObject);
         }
     }
 

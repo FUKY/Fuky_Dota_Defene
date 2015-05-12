@@ -15,4 +15,16 @@ public class GameController : MonoSingleton<GameController> {
 	void Update () {
 	
 	}
+
+    public PlayerController GetPlayerControllerByIsMine(bool isMine) 
+    {
+        if (isMine)
+        {
+            return playerController;
+        }
+        else
+        {
+            return enemyController;
+        }
+    }
 }

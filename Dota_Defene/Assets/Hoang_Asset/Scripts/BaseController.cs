@@ -67,6 +67,11 @@ public class BaseController : MonoBehaviour {
         }
 	}
 
+    public void SetIsMine(bool _isMine) 
+    {
+        isMine = _isMine;
+    }
+
     public virtual void onAttack()
     {
         //Chon mot con enemy gan nhat va ban no

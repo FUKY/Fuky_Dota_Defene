@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class AntController : BaseController {
+    private int id;
 
     public float speed = 1;
-
+    
     private bool isAcitve;
     private bool canActive;
 
@@ -22,14 +23,16 @@ public class AntController : BaseController {
 	
 	// Update is called once per frame
 	void Update () {
+        Move();
         if (isAcitve)
         {
-            Move();
+            //Move();
         }
         else 
         {
             if (canActive)
             {
+                //Move();
                 timeCanActiveCur += Time.deltaTime;
                 if (timeCanActiveCur >= timeCanActive)
                 {
@@ -68,7 +71,23 @@ public class AntController : BaseController {
     {
         gameObject.SetActive(true);
         canActive = true;
+        isAcitve = false;
         timeCanActiveCur = 0;
+    }
+
+    public void SetActiveAnt(bool _isActive)
+    {
+        isAcitve = _isActive;
+    }
+
+    public void SetAntID(int idAnt) 
+    {
+        this.id = idAnt;
+    }
+
+    public int GetAntId() 
+    {
+        return this.id;
     }
 
     public bool GetActiveAnt() 

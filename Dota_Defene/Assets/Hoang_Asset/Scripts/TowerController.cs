@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 public class TowerController : BaseController {
 
-    List<GameObject> listSolider;
+    List<int> listIDSolider = new List<int>();
     public bool outSolider;//Cho phép solider di ra
 
     public RectTransform targetTower;
 
-    public float countDownSpawnSolider;
-    public float timeSpawnSoliderCur;
+    private float countDownSpawnSolider;
+    private float timeSpawnSoliderCur;
 
     public bool isActive;//khi active thi co the tao ra gold
-    public float timeAddGold;
+    private float timeAddGold;
     public float countDownAddGold;
 	// Use this for initialization
 	void Start () {
-	
+        countDownSpawnSolider = 2;
 	}
 	
 	// Update is called once per frame
@@ -25,8 +25,10 @@ public class TowerController : BaseController {
         if (outSolider)
         {
             timeSpawnSoliderCur += Time.deltaTime;
-            if (listSolider.Count > 0)
+            Debug.Log(System.String.Format("Count of list ID solider = {0}", listIDSolider.Count));
+            if (listIDSolider.Count > 0 && timeSpawnSoliderCur >= countDownSpawnSolider)
             {
+                Debug.Log("Spawn Solider");
                 timeSpawnSoliderCur = 0;
                 SpawnSolider();
             }
@@ -39,13 +41,21 @@ public class TowerController : BaseController {
     {
         //spawn solider thu nhat tu list Tower
         //GameObject solider;
-        AntController antControl = listSolider[0].GetComponent<AntController>();
+        int antID = listIDSolider[0];
+        AntController antControl = GameController.Instance.GetPlayerControllerByIsMine(isMine).GetAntControlByID(antID);
         if (antControl != null)
         {
             antControl.ActiveAnt();
-            
+            antControl.SetTargetTower(targetTower);
         }
+        listIDSolider.Remove(listIDSolider[0]);
         //solider.GetComponent<AntController>().SetTargetTower(targetTower);
+    }
+
+    public void SetTarget(RectTransform _targetTower) 
+    {
+        outSolider = true;
+        targetTower = _targetTower;
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -55,12 +65,12 @@ public class TowerController : BaseController {
         {
             
             AntController antControl = other.gameObject.GetComponent<AntController>();
-            if (antControl != null)// && antControl.isMine
+            if (antControl != null && antControl.isMine == isMine)// && 
             {
                 Debug.Log("Collider with tower");
                 if (antControl.GetActiveAnt())
                 {
-                    //listSolider.Add((GameObject)other.gameObject);
+                    listIDSolider.Add(antControl.GetAntId());
                     antControl.DeActiveAnt();
                 }
 

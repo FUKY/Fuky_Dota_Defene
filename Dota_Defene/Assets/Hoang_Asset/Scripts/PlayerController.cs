@@ -11,6 +11,17 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     public Transform rect;
     public GameObject arrow;
     private List<GameObject> listArrow;
+
+    private Dictionary<int, AntController> listSolider = new Dictionary<int, AntController>();
+
+    public MainTowerController mainTower;
+
+    private float timeSpawnSoliderCur;
+    public float countDownSpawnSolider;
+
+    private int towerStart;
+    private int towerEnd;
+
 	// Use this for initialization
 	void Start () {
         listArrow = new List<GameObject>();
@@ -18,12 +29,24 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
 	
 	// Update is called once per frame
 	void Update () {
+        timeSpawnSoliderCur += Time.deltaTime;
+        if (timeSpawnSoliderCur > countDownSpawnSolider)
+        {
+            //Spawn
+            AntController antControl = mainTower.SpawnAnt();
+            listSolider[antControl.GetAntId()] = antControl;
+            timeSpawnSoliderCur = 0;
+        }
         
 	}
     Vector3 posBegin, posEnd;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        posBegin = GetPosition(eventData);
+        int idTowerStart = GetTowerByPointer(eventData);
+        if (idTowerStart != -1)
+        {
+            towerStart = idTowerStart;
+        }
     }
     public void OnDrag(PointerEventData eventData)
     {
@@ -33,8 +56,39 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         //Destroy(listArrow[0]);
         //listArrow.Clear();
+        int idTowerEnd = GetTowerByPointer(eventData);
+        if (idTowerEnd != -1 && (towerStart >= 0 && towerStart <= listTower.Count))
+        {
+            towerEnd = idTowerEnd;
+            GameObject towerStartObj = listTower[towerStart];
+            GameObject towerTrans = towerStartObj.transform.FindChild("Tower").gameObject;
+            TowerController towerStartControl = towerTrans.GetComponent<TowerController>();
+            
+            GameObject towerEndObj = listTower[towerEnd];
+            if (towerStartControl != null)
+            {
+                Debug.Log("Has tower controller");
+                towerStartControl.SetTarget((RectTransform)towerEndObj.transform);
+            } 
+            else
+            {
+                Debug.Log("Hasn't tower controller");
+            }
+            
+        }
     }
-    Vector2  GetPosition(PointerEventData eventData)
+
+    public AntController GetAntControlByID(int antID) 
+    {
+        if (listSolider.ContainsKey(antID))
+        {
+            return listSolider[antID];
+        }
+
+        return null;
+    }
+
+    private int GetTowerByPointer(PointerEventData eventData)
     {
         Vector2 pointerPostion = eventData.position;
         Vector2 localPointerPosition;
@@ -43,14 +97,15 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             canvasRectTransform, pointerPostion, eventData.pressEventCamera, out localPointerPosition
         ))
         {
-            int i =GetPower(localPointerPosition);
+            int i =GetTower(localPointerPosition);
             if (i != -1)
                 InstantiateArrow(listTower[i].transform.localPosition);
-            return localPointerPosition;
+            return i;
         }
-        return localPointerPosition;
+        return -1;
     }
-    int GetPower(Vector2 localPostition)
+
+    int GetTower(Vector2 localPostition)
     {
         for (int i = 0; i < listTower.Count; i++)
         {
