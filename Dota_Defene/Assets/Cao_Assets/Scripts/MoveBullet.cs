@@ -3,9 +3,11 @@ using System.Collections;
 
 public class MoveBullet : MonoBehaviour {
 
+    private bool isMine;
+    private int damage;
     public float speed = 1;
     public float angle;
-    public RectTransform rect;
+    //public RectTransform rect;
 	// Use this for initialization
 	void Start () {
 	}
@@ -14,14 +16,16 @@ public class MoveBullet : MonoBehaviour {
 	void Update () {
         Move();      
 	}
-    [ContextMenu("Test")]
-    void Test()
-    {
-        SetGetTaget(rect);
-    }
-    public void SetGetTaget(RectTransform targetTrans)
+    //[ContextMenu("Test")]
+    //void Test()
+    //{
+    //    SetGetTaget(rect);
+    //}
+    public void SetGetTaget(Transform targetTrans, bool _isMine, int _dmg)
     {
         angle = AngleRotation(targetTrans);
+        damage = _dmg;
+        isMine = _isMine;
     }
     void Move()
     {        
@@ -30,7 +34,7 @@ public class MoveBullet : MonoBehaviour {
         transform.localPosition += new Vector3(x, y, 0);
 
     }
-    float AngleRotation(RectTransform tagetTranform)
+    float AngleRotation(Transform tagetTranform)
     {
         Vector3 relative = tagetTranform.localPosition - transform.localPosition;//transfBegin.InverseTransformPoint(transfEnd.localPosition);
 
@@ -41,8 +45,14 @@ public class MoveBullet : MonoBehaviour {
     {
         //if (col.tag == "solider")
         //{
-        //    Destroy(col.gameObject);
-        //    Destroy(gameObject);
+        //    //Destroy(col.gameObject);
+        //    AntController antControl = 
         //}
+        //else
+        //{
+
+        //}
+
+        Destroy(gameObject);
     }
 }

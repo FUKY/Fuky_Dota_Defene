@@ -27,6 +27,7 @@ public class AntController : BaseController {
         if (isAcitve)
         {
             //Move();
+            UpdateAttack();
         }
         else 
         {

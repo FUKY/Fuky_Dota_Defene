@@ -11,6 +11,8 @@ public class BaseController : MonoBehaviour {
     public int damage;
 
     public float countDown;
+
+    [HideInInspector]
     private float timeAttackCur;//+= deltaTime
 #if DIRECT_HIT
     public List<BaseController> targetList = new List<BaseController>();
@@ -54,6 +56,21 @@ public class BaseController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //timeAttackCur += Time.deltaTime;
+
+        //if (targetList.Count > 0)
+        //{
+        //    if (timeAttackCur > countDown)
+        //    {
+        //        timeAttackCur = 0;
+        //        onAttack();
+        //    }
+            
+        //}
+	}
+
+    public void UpdateAttack() 
+    {
         timeAttackCur += Time.deltaTime;
 
         if (targetList.Count > 0)
@@ -63,9 +80,9 @@ public class BaseController : MonoBehaviour {
                 timeAttackCur = 0;
                 onAttack();
             }
-            
+
         }
-	}
+    }
 
     public void SetIsMine(bool _isMine) 
     {
@@ -75,7 +92,15 @@ public class BaseController : MonoBehaviour {
     public virtual void onAttack()
     {
         //Chon mot con enemy gan nhat va ban no
-
+        GameObject target = targetList[0];
+        if (target != null)
+        {
+            GameObject bulletObj = Instantiate(bullet, Vector3.one, Quaternion.identity) as GameObject;
+            bulletObj.transform.SetParent(transform.parent);
+            bulletObj.transform.localPosition = transform.localPosition;
+            bulletObj.transform.localScale = Vector3.zero;
+            bulletObj.GetComponent<MoveBullet>().SetGetTaget(target.transform, this.isMine, this.damage);
+        }
         //Tạo ra viên đạn và Fire tại đây
 
     }

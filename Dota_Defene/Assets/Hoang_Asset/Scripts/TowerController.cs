@@ -34,7 +34,8 @@ public class TowerController : BaseController {
             }
             
         }
-        
+
+        UpdateAttack();
 	}
 
     void SpawnSolider() 
