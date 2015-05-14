@@ -20,7 +20,11 @@ public class AntController : BaseController {
 	void Start () {
         isAcitve = true;
 	}
-	
+    void SetPritive()
+    {
+        hp = 0;
+        damage = 10;
+    }
 	// Update is called once per frame
 	void Update () {
         Move();
@@ -100,5 +104,22 @@ public class AntController : BaseController {
     {
         gameObject.SetActive(false);
         isAcitve = false;
+    }
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "solider")
+        {
+            
+            AntController _ant = col.gameObject.GetComponent<AntController>();
+            if (isMine != _ant.isMine)
+            {
+                Destroy(col.gameObject);
+                Destroy(gameObject);
+            }
+        }
     }
 }

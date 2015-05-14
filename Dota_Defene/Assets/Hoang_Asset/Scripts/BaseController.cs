@@ -98,12 +98,15 @@ public class BaseController : MonoBehaviour {
             GameObject bulletObj = Instantiate(bullet, Vector3.one, Quaternion.identity) as GameObject;
             bulletObj.transform.SetParent(transform.parent);
             bulletObj.transform.localPosition = transform.localPosition;
-            bulletObj.transform.localScale = Vector3.zero;
-            bulletObj.GetComponent<MoveBullet>().SetGetTaget(target.transform, this.isMine, this.damage);
+            bulletObj.transform.localScale = Vector3.one;
+            MoveBullet _moveBullet = bulletObj.GetComponent<MoveBullet>();
+            _moveBullet.SetGetTaget(target.transform, this.isMine, this.damage);            
         }
+
         //Tạo ra viên đạn và Fire tại đây
 
     }
+    
 
     public virtual void Hit(int DMG)
     {

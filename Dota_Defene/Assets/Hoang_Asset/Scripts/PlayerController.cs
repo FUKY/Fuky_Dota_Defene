@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
 
     public bool isMine;
     public List<GameObject> listTower;
+    public List<GameObject> listAllTower;
     public RectTransform canvasRectTransform;
     public Transform rect;
     public GameObject arrow;
@@ -57,25 +58,45 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         //Destroy(listArrow[0]);
         //listArrow.Clear();
         int idTowerEnd = GetTowerByPointer(eventData);
-        if (idTowerEnd != -1 && (towerStart >= 0 && towerStart <= listTower.Count))
+        Debug.Log(System.String.Format("ID Tower End = {0}", idTowerEnd));
+
+        //if (idTowerEnd != -1 && (towerStart >= 0 && towerStart <= listTower.Count))
+        //{
+        //    towerEnd = idTowerEnd;
+        //    GameObject towerStartObj = listTower[towerStart];
+        //    GameObject towerTrans = towerStartObj.transform.FindChild("Tower").gameObject;
+        //    TowerController towerStartControl = towerTrans.GetComponent<TowerController>();
+            
+        //    GameObject towerEndObj = listTower[towerEnd];
+        //    if (towerStartControl != null)
+        //    {
+        //        Debug.Log("Has tower controller");
+        //        towerStartControl.SetTarget((RectTransform)towerEndObj.transform);
+        //    } 
+        //    else
+        //    {
+        //        Debug.Log("Hasn't tower controller");
+        //    }            
+        //}
+        if (idTowerEnd != -1 && (towerStart >= 0 && towerStart <= listAllTower.Count))
         {
             towerEnd = idTowerEnd;
-            GameObject towerStartObj = listTower[towerStart];
+            GameObject towerStartObj = listAllTower[towerStart];
             GameObject towerTrans = towerStartObj.transform.FindChild("Tower").gameObject;
             TowerController towerStartControl = towerTrans.GetComponent<TowerController>();
-            
-            GameObject towerEndObj = listTower[towerEnd];
+
+            GameObject towerEndObj = listAllTower[towerEnd];
             if (towerStartControl != null)
             {
                 Debug.Log("Has tower controller");
                 towerStartControl.SetTarget((RectTransform)towerEndObj.transform);
-            } 
+            }
             else
             {
                 Debug.Log("Hasn't tower controller");
             }
-            
         }
+
     }
 
     public AntController GetAntControlByID(int antID) 
@@ -97,9 +118,11 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             canvasRectTransform, pointerPostion, eventData.pressEventCamera, out localPointerPosition
         ))
         {
-            int i =GetTower(localPointerPosition);
+            
+            int i = GetTower(localPointerPosition);
+
             if (i != -1)
-                InstantiateArrow(listTower[i].transform.localPosition);
+                InstantiateArrow(listAllTower[i].transform.localPosition);
             return i;
         }
         return -1;
@@ -107,12 +130,13 @@ public class PlayerController : MonoBehaviour, IBeginDragHandler, IEndDragHandle
 
     int GetTower(Vector2 localPostition)
     {
-        for (int i = 0; i < listTower.Count; i++)
+        for (int i = 0; i < listAllTower.Count; i++)
         {
-            
-            RectTransform rectTransform= listTower[i].GetComponent<RectTransform>();
-            float left = listTower[i].transform.localPosition.x - 50 / 2;
-            float right = listTower[i].transform.localPosition.y - 50 / 2;
+
+            RectTransform rectTransform = listAllTower[i].GetComponent<RectTransform>();
+
+            float left = listAllTower[i].transform.localPosition.x - 50 / 2;
+            float right = listAllTower[i].transform.localPosition.y - 50 / 2;
             Rect rect = new Rect(left, right, rectTransform.rect.width, rectTransform.rect.height);
             if (rect.Contains(localPostition))
             {

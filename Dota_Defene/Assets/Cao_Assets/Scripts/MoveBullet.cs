@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MoveBullet : MonoBehaviour {
 
@@ -7,6 +8,7 @@ public class MoveBullet : MonoBehaviour {
     private int damage;
     public float speed = 1;
     public float angle;
+   
     //public RectTransform rect;
 	// Use this for initialization
 	void Start () {
@@ -41,18 +43,29 @@ public class MoveBullet : MonoBehaviour {
         float angle = Mathf.Atan2(relative.y, relative.x) * Mathf.Rad2Deg;
         return angle;
     }
+    void Test()
+    {
+        TowerController _towerControl = transform.parent.GetComponentInChildren<TowerController>();
+        if (_towerControl == null)
+        {
+            Debug.Log("K tim thay");
+        }
+        if(_towerControl != null)
+        {
+            Debug.Log("Da Remove");
+            _towerControl.RemoveListTaget();
+        }
+        
+    }
     void OnTriggerEnter2D(Collider2D col)
     {
-        //if (col.tag == "solider")
-        //{
-        //    //Destroy(col.gameObject);
-        //    AntController antControl = 
-        //}
-        //else
-        //{
-
-        //}
-
+        if (col.tag == "solider")
+        {
+            Debug.Log("Da va cham voi Bee");            
+            Destroy(col.gameObject);
+            Test();
+            
+        }
         Destroy(gameObject);
     }
 }

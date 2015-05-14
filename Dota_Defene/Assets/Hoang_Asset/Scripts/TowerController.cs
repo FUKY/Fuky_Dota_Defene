@@ -34,8 +34,7 @@ public class TowerController : BaseController {
             }
             
         }
-
-        UpdateAttack();
+        UpdateAttack();        
 	}
 
     void SpawnSolider() 
@@ -58,7 +57,11 @@ public class TowerController : BaseController {
         outSolider = true;
         targetTower = _targetTower;
     }
-
+    public void RemoveListTaget()
+    {
+        if (targetList.Count > 0)
+            targetList.RemoveAt(0);
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         //add list Tower
@@ -74,10 +77,10 @@ public class TowerController : BaseController {
                     listIDSolider.Add(antControl.GetAntId());
                     antControl.DeActiveAnt();
                 }
-
             }else
             {
                 this.AddEnemyInRange(other.gameObject);
+                
             }
         }
     }
